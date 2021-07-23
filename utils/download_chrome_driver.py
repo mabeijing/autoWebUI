@@ -5,6 +5,11 @@ download chromedriver
   1、chromedriver_path=包下载绝对路径
   2、max_work_thread=工作线程数，通常等于cpu支持线程数
 
+增加queue
+1、生产者
+    解析下载url写入queue
+2、消费者
+    从queue中get到url进行下载操作
 """
 import re
 import os
@@ -12,8 +17,8 @@ import time
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed, wait
 
-chromedriver_path = 'E:/browser_driver/chromedriver/'
-max_work_thread = 4
+chromedriver_path = '/Users/test/web_drivers/chromedriver'
+max_work_thread = os.cpu_count()
 
 
 def _get_html_text(url: str) -> requests.Response.text:
@@ -27,14 +32,16 @@ def extract_version_url(url='https://npm.taobao.org/mirrors/chromedriver'):
     html_text = _get_html_text(url)
     pattern = r'<a href=\"/mirrors/chromedriver/\d.*>(.*)/</a>'
     version_list = re.findall(pattern, html_text)
-    download_url_list = [url + '/' + i + '/' for i in version_list]
+    # download_url_list = [url + '/' + i + '/' for i in version_list]
+    download_url_list = [os.path.join(url, ul) + '/' for ul in version_list]
     return download_url_list
 
 
-def extract_download_url(url):
+def extract_download_url(url: str) -> list:
     html_text = _get_html_text(url)
     pattern = r'<a href=\"(/mirrors/chromedriver/.*?\.zip)\">'
-    download_url_list = ['https://npm.taobao.org' + url for url in re.findall(pattern, html_text)]
+    download_list = re.findall(pattern, html_text)
+    download_url_list = ['https://npm.taobao.org' + url for url in download_list]
     return download_url_list
 
 
@@ -48,11 +55,12 @@ def download_zip(download_url: str, cover=False):
 
     file_dir, file_name = tuple(download_url.split('/')[5:7])
 
-    file_abs_dir = chromedriver_path + file_dir
-    file_abs_name = file_abs_dir + '/' + file_name
+    # file_abs_dir = chromedriver_path + file_dir
+    # file_abs_name = file_abs_dir + '/' + file_name
+    file_abs_name = os.path.join(chromedriver_path, file_dir, file_name)
 
-    if not os.path.exists(file_abs_dir):
-        os.makedirs(file_abs_dir, exist_ok=True)
+    if not os.path.exists(os.path.dirname(file_abs_name)):
+        os.makedirs(os.path.dirname(file_abs_name), exist_ok=True)
 
     if not os.path.exists(file_abs_name):
         _download()
@@ -93,3 +101,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+    # r = extract_version_url()
+    # print(r)
