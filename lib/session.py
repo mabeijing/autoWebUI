@@ -2,16 +2,11 @@ from typing import Optional
 from selenium.webdriver.remote.webdriver import WebDriver
 
 """
-实现page_session的基类，每个page都有自己的sessionId，page携带session去查询web的tab
+根据page的特征码_signature_code和window_handle做映射。
 
-每个Page都有特征码__signature_code，同一个Page类的特征码一样，每一个page都有对应的window_handle
+在拉起浏览器的时候，保存当前driver，window_handle，设置current_window_handle = DEFAULT_WINDOW_HANDLE
+实例化Page的时候，如果查不到特征码，切换到current_window_handle，并且保存_session_dict。否则直接切换到对应的window_handle
 
-首先是Session类属性
-在拉起浏览器的时候，保存sessionId，当前window句柄，设置当前句柄是默认window句柄。
-实例化Page的时候，读取Session.current_window_handle == self.current_window_handle
-"""
-
-"""
 session_dict = {'Page.instance._signature_code': current_window_handle}
 """
 
