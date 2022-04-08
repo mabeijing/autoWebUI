@@ -2,6 +2,8 @@
 所有page的基类
 """
 
+from lib.custom_driver import UserWebDriver
 
-class BasePage:
+
+class BasePage(UserWebDriver):
     pass
