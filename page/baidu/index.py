@@ -2,6 +2,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
 from page.base_page import BasePage
+from lib.scaffold import log
 
 
 class IndexPage(BasePage):
@@ -11,6 +12,7 @@ class IndexPage(BasePage):
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
+    @log
     def search(self, text: str):
         self.get('https://www.baidu.com')
         self.find_element_by_loc(self._loc_input_box).send_keys(text)

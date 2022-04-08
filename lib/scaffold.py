@@ -1,16 +1,23 @@
 """
 脚手架，实现一些装饰器，性能采集之类的功能
 """
+import os
+import time
 from functools import wraps
-import os.path
+
+from loguru import logger
 
 
 def log(fun):
+    _fun_name: str = fun.__name__
+    _fun_module: str = fun.__module__
+    _fun_code = fun.__code__
+
     @wraps(fun)
     def wrapper(*args, **kwargs):
-        print('-----')
+        t = time.time()
         response = fun(*args, **kwargs)
-        print('######')
+        logger.debug(f'<{_fun_module}:{_fun_name}:{_fun_code.co_firstlineno + 1}> - duration: {time.time() - t}')
         return response
 
     return wrapper

@@ -8,10 +8,10 @@ from lib.custom_shadow_root import CustomShadowRoot
 
 @pytest.fixture(scope='class', autouse=True)
 def init():
-    print('hello')
+    # print('\nhello')
     WebDriver._web_element_cls = CustomWebElement
     WebDriver._shadowroot_cls = CustomShadowRoot
-    print('world')
+    # print('world')
 
 
 @pytest.fixture(scope='class')
