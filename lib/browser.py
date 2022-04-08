@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.support.events import EventFiringWebDriver
 from lib.hooks import MyListen
 from lib.scaffold import absolute_path
+from lib.session import Session
 import setting
 
 
@@ -29,6 +30,9 @@ def chrome_browser() -> EventFiringWebDriver:
     server = Service(executable_path=setting.executable_path)
 
     driver = webdriver.Chrome(service=server, options=options)
+    Session.DEFAULT_DRIVER = driver
+    Session.DEFAULT_WINDOW_HANDLE = driver.current_window_handle
+    Session.current_window_handle = driver.current_window_handle
     driver.set_window_size(1920, 1080)
     driver.maximize_window()
     driver.implicitly_wait(3)

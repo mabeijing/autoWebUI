@@ -7,3 +7,7 @@
 *   重载selenium核心类
 *   拆分POM模型，实现Page完成功能，component实现页面功能封装，model完成数据驱动
 *   mock构造测试场景
+
+
+**核心类：driver**
+*   实现平滑切换项目
