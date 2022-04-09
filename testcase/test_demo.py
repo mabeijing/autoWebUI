@@ -4,17 +4,16 @@ import pytest
 import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from page.baidu import IndexPage, ContentPage
+from page import BaiduIndexPage, ContentPage, WsIndexPage
 
 
 class TestBaiduDemo:
 
     @allure.title('demo')
     def test_baidu_demo(self, driver: WebDriver):
-        IndexPage(driver=driver).search('java')
-        ContentPage(driver=driver).get_url()
-        IndexPage(driver=driver).search('python')
-        IndexPage(driver=driver).clear_session()
+        BaiduIndexPage(driver=driver).search('李白')
+        BaiduIndexPage(driver=driver).search('杜甫')
+        WsIndexPage(driver=driver).login()
         time.sleep(5)
 
 

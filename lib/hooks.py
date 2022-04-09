@@ -5,8 +5,6 @@ import time
 from loguru import logger
 from selenium.webdriver.support.events import AbstractEventListener
 
-# import config
-
 # Global execution speed
 TIME_INTERVAL = 0.1
 
@@ -26,14 +24,8 @@ class MyListen(AbstractEventListener):
     def after_find(self, by, value, driver):
         logger.debug(f'find_out_element: {by, value}')
 
-    def before_click(self, element, driver):
-        time.sleep(TIME_INTERVAL)
-
     def after_click(self, element, driver):
-        logger.debug(f'click_element：{element}')
-
-    def before_change_value_of(self, element, driver):
-        time.sleep(TIME_INTERVAL)
+        logger.debug(f'click_element: {element}')
 
     def after_change_value_of(self, element, driver):
         logger.debug(f'change_element_value: {element}')
@@ -41,9 +33,6 @@ class MyListen(AbstractEventListener):
     def on_exception(self, exception, driver):
         """Catch the exception of selenium operation element failure, and other exceptions will not be caught"""
         pass
-
-    def before_close(self, driver):
-        time.sleep(TIME_INTERVAL)
 
     def after_close(self, driver):
         logger.debug(f'window_handles: {driver.window_handles}')

@@ -9,11 +9,11 @@ class ContentPage(BasePage):
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
+    @property
     @log
-    def _pom_url(self):
-        return self.current_url
+    def _pom_title(self):
+        return self.title
 
-    def get_url(self):
-        print(self._pom_url())
-        self.show_session()
+    def current_title(self):
+        print(self._pom_title)
         # return self._pom_url
