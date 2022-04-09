@@ -52,6 +52,8 @@ class Session:
     def show() -> dict:
         """查看当前Session数据"""
         return {
+            'driver': Session.DEFAULT_DRIVER,
+            'default_window_handle': Session.DEFAULT_WINDOW_HANDLE,
             'main_app_handle': Session.main_app_handle,
             'page_map': Session.page_map,
             'untreated_window_handles': Session.untreated_window_handles
@@ -110,16 +112,20 @@ class Session:
                 app: str = handle_signature_code(self.instance._signature_code)
                 main_handle: Optional[str] = Session.main_app_handle.get(app, None)
                 if not main_handle:
-                    _window_handles: set = set(self.instance.window_handles)
-                    self.instance.switch_to.new_window('tab')
-                    new_handle: list = list(set(self.instance.window_handles) - _window_handles)
-                    assert len(new_handle) == 1, f'new_window should open one window_handle but {new_handle}.'
-                    self.instance.switch_to.window(new_handle[0])
-                    Session.main_app_handle[app] = new_handle[0]
-                    Session.page_map[self.instance._signature_code] = new_handle[0]
+                    if Session.NEW_FLAG:
+                        Session.main_app_handle[app] = Session.DEFAULT_WINDOW_HANDLE
+                        Session.page_map[self.instance._signature_code] = Session.DEFAULT_WINDOW_HANDLE
+                        Session.NEW_FLAG = False
+                    else:
+                        _window_handles: set = set(self.instance.window_handles)
+                        self.instance.switch_to.new_window('tab')
+                        new_handle: list = list(set(self.instance.window_handles) - _window_handles)
+                        assert len(new_handle) == 1, f'new_window should open one window_handle but {new_handle}.'
+                        self.instance.switch_to.window(new_handle[0])
+                        Session.main_app_handle[app] = new_handle[0]
+                        Session.page_map[self.instance._signature_code] = new_handle[0]
                 else:
                     if Session.NEW_FLAG:
-                        self.instance.switch_to.window(Session.DEFAULT_WINDOW_HANDLE)
                         Session.page_map[self.instance._signature_code] = Session.DEFAULT_WINDOW_HANDLE
                         Session.NEW_FLAG = False
                     else:

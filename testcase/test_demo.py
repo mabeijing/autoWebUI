@@ -13,7 +13,8 @@ class TestBaiduDemo:
     def test_baidu_demo(self, driver: WebDriver):
         SoGouIndexPage(driver=driver).search('杜甫')
         BaiduIndexPage(driver=driver).search('李白')
-
+        time.sleep(3)
+        SoGouIndexPage(driver=driver).search('北京')
         time.sleep(5)
 
 

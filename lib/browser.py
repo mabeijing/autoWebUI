@@ -32,7 +32,6 @@ def chrome_browser() -> EventFiringWebDriver:
     driver = webdriver.Chrome(service=server, options=options)
     Session.DEFAULT_DRIVER = driver
     Session.DEFAULT_WINDOW_HANDLE = driver.current_window_handle
-    Session.current_window_handle = driver.current_window_handle
     driver.set_window_size(1920, 1080)
     driver.maximize_window()
     driver.implicitly_wait(3)
