@@ -9,7 +9,6 @@ from typing import List
 
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.webelement import WebElement
 
 from lib.session import Session
 from lib.custom_element import CustomWebElement
@@ -102,10 +101,9 @@ class UserWebDriver:
         """__attribute无法直接通过该方法调用，因为__attribute会被改写成_class__attribute属性，导致无法通过item直接获取"""
         item: str
         if item.startswith('_pom_'):
-            return object.__getattribute__(self, item)
-        else:
-            return object.__getattribute__(self, item)
+            self._session.switch_handle()
+        return object.__getattribute__(self, item)
 
-    # def __getattr__(self, item):
-    #     """直接读取self._driver的函数"""
-    #     return getattr(self._driver, item)
+    def __getattr__(self, item):
+        """直接读取self._driver的函数"""
+        return getattr(self._driver, item)
