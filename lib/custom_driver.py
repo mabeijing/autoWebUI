@@ -102,7 +102,6 @@ class UserWebDriver:
         """__attribute无法直接通过该方法调用，因为__attribute会被改写成_class__attribute属性，导致无法通过item直接获取"""
         item: str
         if item.startswith('_pom_'):
-            self._session.add()
             return object.__getattribute__(self, item)
         else:
             return object.__getattribute__(self, item)

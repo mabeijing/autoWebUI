@@ -47,5 +47,4 @@ class _ContentPage(BasePage):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        Session.page_map.pop(self._signature_code)
         self.close()

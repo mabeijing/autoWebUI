@@ -4,6 +4,6 @@
 from page.baidu.index import IndexPage as BaiduIndexPage
 from page.baidu.content import ContentPage
 
-from page.ws.index import IndexPage as WsIndexPage
+from page.sogou.index import IndexPage as SoGouIndexPage
 
-__all__ = [BaiduIndexPage, ContentPage, WsIndexPage]
+__all__ = [BaiduIndexPage, ContentPage, SoGouIndexPage]
