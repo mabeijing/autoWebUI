@@ -1,7 +1,7 @@
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
-from page.base_page import BasePage
+from page.base_page import BasePage, InnerPage
 from lib.scaffold import log
 
 
@@ -18,7 +18,19 @@ class IndexPage(BasePage):
         self.get('https://www.baidu.com')
         self.find_element_by_loc(self._loc_input_box).send_keys(text)
         self.find_element_by_loc(self._loc_submit_btn).click()
-        self.find_element_by_loc(self._loc_content).click()
+        self.find_element_by_loc(self._loc_content).click_and_register_page(ContentPage)
 
     def search(self, text: str):
         self._pom_search(text=text)
+
+
+class ContentPage(InnerPage):
+
+    def __init__(self, driver: WebDriver):
+        super().__init__(driver)
+
+    def _pom_title(self) -> str:
+        return self.title
+
+    def get_title(self) -> str:
+        return self._pom_title()

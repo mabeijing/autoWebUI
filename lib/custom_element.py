@@ -18,11 +18,20 @@ class CustomWebElement(WebElement):
     def find_elements_by_loc(self, loc: tuple) -> List[WebElement]:
         return self.find_elements(*loc)
 
-    def click_and_switch_window_handle(self) -> None:
+    def click_and_register_page(self, page) -> None:
+        """
+        :param page: SinglePage
+        :return: None
+        点击后，自动注册下SinglePage。并且将打开的句柄，添加到Session，先点击，后注册
+        click_and_register_page(ContentPage1)
+        click_and_register_page(ContentPage2)
+        click_and_register_page(ContentPage3)
+        依次注册3个page。
+        未实现点击一次，注册多个Page。
+        """
         _window_handles: set = set(self._parent.window_handles)
         super().click()
         new_handle: list = list(set(self._parent.window_handles) - _window_handles)
         assert len(new_handle) == 1
-        Session.recent_window_handle = self._parent.current_window_handle
-        self._parent.switch_to.window(new_handle[0])
-        Session.current_window_handle = self._parent.current_window_handle
+        Session.untreated_window_handle = new_handle[0]
+        page(self._parent)

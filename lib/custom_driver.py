@@ -107,3 +107,6 @@ class UserWebDriver:
     def __getattr__(self, item):
         """直接读取self._driver的函数"""
         return getattr(self._driver, item)
+
+    def print_self(self):
+        return self.step_name
